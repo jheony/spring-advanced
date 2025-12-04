@@ -19,15 +19,14 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public UserResponse getUser(long userId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new InvalidRequestException("User not found"));
+        User user = userRepository.findUserById(userId);
         return new UserResponse(user.getId(), user.getEmail());
     }
 
     @Transactional
     public void changePassword(long userId, UserChangePasswordRequest userChangePasswordRequest) {
 
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new InvalidRequestException("User not found"));
+        User user = userRepository.findUserById(userId);
 
         if (passwordEncoder.matches(userChangePasswordRequest.getNewPassword(), user.getPassword())) {
             throw new InvalidRequestException("새 비밀번호는 기존 비밀번호와 같을 수 없습니다.");

@@ -1,5 +1,6 @@
 package org.example.expert.domain.todo.repository;
 
+import org.example.expert.domain.common.exception.InvalidRequestException;
 import org.example.expert.domain.todo.entity.Todo;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,5 +21,7 @@ public interface TodoRepository extends JpaRepository<Todo, Long> {
             "WHERE t.id = :todoId")
     Optional<Todo> findByIdWithUser(@Param("todoId") Long todoId);
 
-    int countById(Long todoId);
+    default Todo findTodoById(Long id){
+        return findById(id).orElseThrow(() -> new InvalidRequestException("Todo not found"));
+    }
 }
