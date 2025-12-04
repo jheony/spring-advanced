@@ -1,5 +1,6 @@
 package org.example.expert.domain.comment.service;
 
+import org.example.expert.data.CommentFixture;
 import org.example.expert.data.TodoFixture;
 import org.example.expert.data.UserFixture;
 import org.example.expert.domain.comment.dto.request.CommentSaveRequest;
@@ -10,7 +11,6 @@ import org.example.expert.domain.common.dto.AuthUser;
 import org.example.expert.domain.common.exception.InvalidRequestException;
 import org.example.expert.domain.todo.entity.Todo;
 import org.example.expert.domain.todo.repository.TodoRepository;
-import org.example.expert.domain.user.entity.User;
 import org.example.expert.domain.user.enums.UserRole;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,8 +18,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -36,15 +34,17 @@ class CommentServiceTest {
     @InjectMocks
     private CommentService commentService;
 
-    private User testUser;
+    private AuthUser authUser;
     private long todoId;
     private Todo testTodo;
+    private Comment testComment;
 
     @BeforeEach
     void setup() {
         todoId = 1L;
-        testUser = UserFixture.createUserAdminRole();
         testTodo = TodoFixture.createTodo();
+        authUser = UserFixture.createAuthUserUserRole();
+        testComment = CommentFixture.createComment();
     }
 
     @Test
@@ -67,15 +67,10 @@ class CommentServiceTest {
     @Test
     public void comment를_정상적으로_등록한다() {
         // given
-        long todoId = 1;
         CommentSaveRequest request = new CommentSaveRequest("contents");
-        AuthUser authUser = new AuthUser(1L, "email", UserRole.USER);
-        User user = User.fromAuthUser(authUser);
-        Todo todo = new Todo("title", "title", "contents", user);
-        Comment comment = new Comment(request.getContents(), user, todo);
 
-        given(todoRepository.findById(anyLong())).willReturn(Optional.of(todo));
-        given(commentRepository.save(any())).willReturn(comment);
+        given(todoRepository.findTodoById(anyLong())).willReturn(testTodo);
+        given(commentRepository.save(any())).willReturn(testComment);
 
         // when
         CommentSaveResponse result = commentService.saveComment(authUser, todoId, request);
