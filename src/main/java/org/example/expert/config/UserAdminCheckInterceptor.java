@@ -5,6 +5,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.example.expert.domain.user.enums.UserRole;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -12,14 +14,13 @@ import java.io.IOException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
-import java.util.logging.Logger;
 
 @Component
 @RequiredArgsConstructor
 public class UserAdminCheckInterceptor implements HandlerInterceptor {
 
     private final JwtUtil jwtUtil;
-    private final Logger logger = Logger.getLogger("Interceptor API logging");
+    private final Logger log = LoggerFactory.getLogger(UserAdminCheckInterceptor.class);
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws IOException {
@@ -38,8 +39,8 @@ public class UserAdminCheckInterceptor implements HandlerInterceptor {
         String path = request.getRequestURI();
         String decodePath = URLDecoder.decode(path, StandardCharsets.UTF_8);
 
-        logger.info("요청 URL: " + decodePath);
-        logger.info("요청 시각: " + LocalDateTime.now());
+        log.info("요청 URL: {}", decodePath);
+        log.info("요청 시각: {}", LocalDateTime.now());
 
         return true;
     }
