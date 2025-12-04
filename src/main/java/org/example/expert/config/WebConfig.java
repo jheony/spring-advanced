@@ -1,6 +1,9 @@
 package org.example.expert.config;
 
 import lombok.RequiredArgsConstructor;
+import org.example.expert.aop.LoggingAspect;
+import org.example.expert.interceptor.UserAdminCheckInterceptor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -23,5 +26,10 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry){
         registry.addInterceptor(userAdminCheckInterceptor)
                 .addPathPatterns("/admin/**");
+    }
+
+    @Bean
+    public LoggingAspect loggingAspect(){
+        return new LoggingAspect();
     }
 }

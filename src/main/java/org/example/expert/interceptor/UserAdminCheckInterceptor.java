@@ -1,9 +1,10 @@
-package org.example.expert.config;
+package org.example.expert.interceptor;
 
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.example.expert.config.JwtUtil;
 import org.example.expert.domain.user.enums.UserRole;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
