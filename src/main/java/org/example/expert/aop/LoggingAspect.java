@@ -1,5 +1,6 @@
 package org.example.expert.aop;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -25,13 +26,20 @@ public class LoggingAspect {
 
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
 
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        String requestBody = objectMapper.writeValueAsString(joinPoint.getArgs());
+
         log.info("요청한 사용자 ID: {}", request.getAttribute("userId"));
+        log.info("요청 본문: {}", requestBody);
         log.info("API 요청 시각: {}", LocalDateTime.now());
         log.info("API 요청 URL: {}", request.getRequestURI());
 
         Object result = joinPoint.proceed();
+        String resultBody = objectMapper.writeValueAsString(result);
+
         if (result != null) {
-            log.info("응답 본문: {}", result);
+            log.info("응답 본문: {}", resultBody);
         }
 
         return result;
