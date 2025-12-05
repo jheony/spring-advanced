@@ -17,6 +17,8 @@ Lv2-2 |Validation 적용
 Lv3	|N+1 해결	|JPQL Fetch Join → EntityGraph 대체
 Lv4|	테스트 코드	|총 4개의 테스트 수정 및 서비스 로직 수정
 Lv5| API 로깅 | Interceptor와 AOP 구현
+Lv6 | 직접 문제 정의 및 해결| dfault method 적용으로 가독성 향상
+Lv7 | 테스트 코드 |Line Coverage를 중점적으로 작성
 
 
 ## Test Coverage
