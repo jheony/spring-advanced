@@ -21,4 +21,13 @@ public class FilterConfig {
 
         return registrationBean;
     }
+
+    @Bean
+    public FilterRegistrationBean<HttpServletWrappingFilter> firstFilterRegister()  {
+        FilterRegistrationBean<HttpServletWrappingFilter> registrationBean =
+                new FilterRegistrationBean<>(new HttpServletWrappingFilter());
+        registrationBean.setOrder(Integer.MIN_VALUE);
+
+        return registrationBean;
+    }
 }
